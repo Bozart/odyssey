@@ -1,6 +1,6 @@
 # see also test/files/.gitignore
 # taken from https://github.com/scala/scala/blob/master/gitignore.SAMPLE
-#/.gitignore  <-- I've ignored this because I want to use it among my own computers
+#/.gitignore  <-- I've included this because I want to use it among my own computers
 /test/files/.gitignore
 
 *.jar
@@ -12,6 +12,10 @@
 
 /target/
 /src/jline/target/
+
+#scala worksheet I sometimes use
+/.worksheet
+/src/main/scala/odyssey/*.sc
 
 # target directories for ant build
 /build/
