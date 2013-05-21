@@ -8,7 +8,21 @@ object Station {
   // ftp://ftp.ncdc.noaa.gov/pub/data/inventories/WBAN.TXT.Z
   // formats are listed in:
   // ftp://ftp.ncdc.noaa.gov/pub/data/inventories/WBAN-FMT.TXT
-
+  case class DMS(
+      Degrees:   Int,
+      Minutes:   Int,
+      Seconds:   Int,
+      Precision: String
+      )
+  case class LatLonElevation(
+      Latitude:          DMS,
+      Longitude:         DMS,
+      ElevationGround:   Option[Int],
+      Elevation:         Option[Int],
+      ElevationTypeCode: Option[Int]
+      )
+  
+      
   case class WBAN(
       CoopStationID:                  Option[String],  // 01 - 06     Coop Station Id
       ClimateDivision:                Option[String],  // 08 - 09     Climate Division
@@ -25,15 +39,17 @@ object Station {
       HistoricalWBANStationName:      Option[String],  //131 - 160    Historical WBAN Station Name
       BeginningDate:                  Option[String],  //162 - 169    Beginning Date of Period of Record ( YYYYMMDD )  ( "00000101" => Unknown Begin Date )
       EndingDate:                     Option[String],  //171 - 178    Ending Date of Period of Record ( YYYYMMDD )  ( "99991231" => Station Currently Open )
-      Latitude:                       Option[String],  //180 - 180    Latitude Direction  ( " " => North, "-" => South ) //181 - 182    Latitude Degrees //184 - 185    Latitude Minutes  //187 - 188    Latitude Seconds
-      Longitude:                      Option[String],  //191 - 193    Longitude Direction  ( " " => East, "-" => West )  //195 - 196    Longitude Degrees  //198 - 199    Longitude Minutes //201 - 202    Longitude Seconds
-      LatitudeLongitudePrecisionCode: Option[String],  //201 - 202     Latitude/Longitude Precision Code ( "54" => Degrees, Whole Minutes ) ( "55" => Degrees, Whole Minutes, Whole Seconds ) ( "63" => Degrees, Decimal Minutes to Hundredths ) ( "64" => Degrees, Decimal Minutes to Thousandths ) ( "66" => Deg, Minutes, Decimal Seconds to Tenths ) ( "67" => Deg, Min, Decimal Seconds to Hundredths )
-      Elevation:                      Option[String],  //204 - 209     Elevation - Ground  ( Feet )
+      Location:                       LatLonElevation  //180 - 180    Latitude Direction  ( " " => North, "-" => South ) //181 - 182    Latitude Degrees //184 - 185    Latitude Minutes  //187 - 188    Latitude Seconds
+                                                       //191 - 193    Longitude Direction  ( " " => East, "-" => West )  //195 - 196    Longitude Degrees  //198 - 199    Longitude Minutes //201 - 202    Longitude Seconds
+                                                       // I think this is not actually in the data!!!
+                                                       //201 - 202     Latitude/Longitude Precision Code ( "54" => Degrees, Whole Minutes ) ( "55" => Degrees, Whole Minutes, Whole Seconds ) ( "63" => Degrees, Decimal Minutes to Hundredths ) ( "64" => Degrees, Decimal Minutes to Thousandths ) ( "66" => Deg, Minutes, Decimal Seconds to Tenths ) ( "67" => Deg, Min, Decimal Seconds to Hundredths )
+                                                       // that means you should subtract 3 from the following ones.
+                                                       //204 - 209     Elevation - Ground  ( Feet )
                                                        //211 - 216     Elevation  ( Feet )
                                                        //218 - 219     Elevation Type Code ( "0" => Unknown Elevation Type ) ( "2" => Barometer Ivory Point ) ( "6" => Ground ) ( "7" => Airport )
-      StationRelocation:              Option[String],  //221 - 231     Station Relocation
-      StationTypes:                   Option[String]   //233 - 282     Station Types
-      //283 - 284     Blank
+                                                       //221 - 231     Station Relocation
+                                                       //233 - 282     Station Types
+                                                       //283 - 284     Blank
   )
   
   lazy val WBANInventoryText = scala.io.Source.fromURL("ftp://ftp.ncdc.noaa.gov/pub/data/inventories/WBAN.TXT")
