@@ -1,5 +1,33 @@
 package odyssey
+
 import com.github.nscala_time.time.Imports._
+import scala.util.parsing.combinator.RegexParsers
+
+
+// parser to read weather station records in the WBAN inventory
+class WBANStationParser extends RegexParsers {
+  override def skipWhitespace = false
+  def Lat = Dir ~ LatDeg ~ (" " ~> Min) ~ (" " ~> Sec) ^^ {
+    case (neg~d~m~s) => Station.DMS(neg * d,m,s)
+  }
+  def Lon = Dir ~ LonDeg ~ (" " ~> Min) ~ (" " ~> Sec) ^^ {
+    case (neg~d~m~s) => Station.DMS(neg * d,m,s)
+  }
+  
+  def Dir: Parser[Int] = """ |-""".r ^^ {
+    case " " => 1  // indicates a northern latitude or eastern longitude
+    case "-" => -1 // indicates a southern latitude or western longitude 
+  }
+  
+  def LatDeg: Parser[Int] = """\d{2}""".r ^^ { _.toInt }
+  def LonDeg: Parser[Int] = """\d{3}""".r ^^ { _.toInt }
+  def Min: Parser[Int] = """\d{2}""".r ^^ { _.toInt }
+  def Sec: Parser[Int] = """\d{2}""".r ^^ { _.toInt }
+  
+  
+}
+
+
 object Station {
   // stuff related to weather stations
   
