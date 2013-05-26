@@ -112,8 +112,8 @@ class StationParseSpec extends FlatSpec with matchers.ShouldMatchers {
     }
     
     Result should equal (WBAN(
-        None,Some("04"),"14732",None,None,None,None,Some("UNITED STATES"),
-        Some("NY"),Some("QUEENS"),Some("+5"),Some("LAGUARDIA"),Some("LAGUARDIA"),
+        None,Some("04"),"14732",None,None,None,None,"UNITED STATES",
+        Some("NY"),Some("QUEENS"),Some("+5"),"LAGUARDIA","LAGUARDIA",
         DateSpan(
             Some(new LocalDate(1939,10,1)),
             Some(new LocalDate(1939,10,7))),
