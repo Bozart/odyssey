@@ -1,5 +1,8 @@
-package object common {
-def doLoanURLCall[T](url: String)(f:(scala.io.BufferedSource=>T)):T = {
+package common
+
+package object util {
+  // loan pattern with a url
+  def doLoanURLCall[T](url: String)(f:(scala.io.BufferedSource=>T)):T = {
     val src = scala.io.Source.fromURL(url)
     try {
       f(src)
@@ -9,7 +12,9 @@ def doLoanURLCall[T](url: String)(f:(scala.io.BufferedSource=>T)):T = {
           println("Exception: " + ex.getMessage)
           throw ex
         }
-      } finally {       src.close
+      } finally {       
+        src.close
       }
     }
+
 }
