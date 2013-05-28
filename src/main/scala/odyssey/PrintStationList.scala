@@ -26,9 +26,9 @@ object PrintStationList extends App {
   // the zip file, and also to push it into a database instead of
   // simply printing it out.
   val stationtext = future {
-    common.util.io.doLoanURLCall(Station.inventoryURL)(
-      (t: scala.io.BufferedSource) =>
-        (t.getLines map Station.parseLine map println).toList)
+    common.util.io.withURLSource(Station.inventoryURL) {
+      src => (src.getLines map Station.parseLine map println).toList
+    }
   }
 
   // define two callbacks which can help keep track of what happens to stationtext

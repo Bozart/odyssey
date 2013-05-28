@@ -9,7 +9,7 @@ package common.util
   */
 package object io {
 
-  /** doLoanURLCall: perform a function on a URL, which is automatically closed
+  /** withURLSource: perform a function on a URL, which is automatically closed
     * This function takes a URL as a string, and a function which operates on a
     * scala.io.BufferedSource (which is what Source.fromURL produces), and automatically
     * closes the URL once the operation is complete or fails.
@@ -19,7 +19,7 @@ package object io {
     *
     * @todo add some kind of exception logging
     */
-  def doLoanURLCall[A](url: String)(f: (scala.io.BufferedSource => A)): A = {
+  def withURLSource[A](url: String)(f: (scala.io.BufferedSource => A)): A = {
     val src = scala.io.Source.fromURL(url)
     try {
       f(src)
